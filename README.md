@@ -1,7 +1,5 @@
 ## Today I Learned 👽
 
-### 🗂️ Categories
-
 #### Git
 - [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
 
