@@ -1,3 +1,9 @@
-## TIL : Today I Learned 👽
+## Today I Learned 👽
 
-til 노트 저장소
+### 🗂️ Categories
+
+#### Git
+- [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
+
+#### Python
+- [for-else](python/python-for-else.md)
