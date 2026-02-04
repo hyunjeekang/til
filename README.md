@@ -1,5 +1,8 @@
 ## Today I Learned 👽
 
+#### Algorithm
+- [Backtracking](algorithm/backtracking.md)
+
 #### Git
 - [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
 
