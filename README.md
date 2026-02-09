@@ -1,7 +1,8 @@
 ## Today I Learned 👽
 
 #### Algorithm
-- [Backtracking](algorithm/backtracking.md)
+- [Backtracking - Subset](algorithm/backtracking.md)
+- [Backtracking - Permutation & Combination](algorithm/backtracking-permutation-and-combination.md)
 
 #### Git
 - [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
