@@ -1,7 +1,8 @@
 ## Today I Learned 👽
 
 #### Algorithm
-- [Backtracking - Subset](algorithm/backtracking.md)
+- [Backtracking](algorithm/backtracking.md)
+- [Backtracking - Subset](algorithm/backtracking-subset.md)
 - [Backtracking - Permutation & Combination](algorithm/backtracking-permutation-and-combination.md)
 
 #### Git
