@@ -2,7 +2,7 @@
 
 #### Algorithm
 - [Backtracking](algorithm/backtracking.md)
-- [Exhaustuve Search](algorithm/exhaustive-search.md)
+- [Exhaustive Search](algorithm/exhaustive-search.md)
 - [Path Finding](algorithm/path-finding.md)
 - [Permutations & Combinations](algorithm/permutations-and-combinations.md)
 - [Subsets](algorithm/subsets.md)
