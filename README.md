@@ -2,8 +2,10 @@
 
 #### Algorithm
 - [Backtracking](algorithm/backtracking.md)
-- [Backtracking - Subset](algorithm/backtracking-subset.md)
-- [Backtracking - Permutation & Combination](algorithm/backtracking-permutation-and-combination.md)
+- [Exhaustuve Search](algorithm/exhaustive-search.md)
+- [Path Finding](algorithm/path-finding.md)
+- [Permutations & Combinations](algorithm/permutations-and-combinations.md)
+- [Subsets](algorithm/subsets.md)
 
 #### Git
 - [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
