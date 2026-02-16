@@ -20,12 +20,12 @@
 
 **Bitwise Operators**
 
-<img src="https://www.educative.io/api/edpresso/shot/6125638579781632/image/5467266204958720?page_type=collection_lesson" width = "90%">
+<img src="https://www.educative.io/api/edpresso/shot/6125638579781632/image/5467266204958720?page_type=collection_lesson" width = "60%">
 
 | Operation | Symbol | Purpose |
 | --- | --- | --- |
 | **AND** | `&` | 특정 비트의 **포함 여부 확인** |
-| **OR** | `|` | 특정 비트 **추가(1로 설정)** |
+| **OR** | `\|` | 특정 비트 **추가(1로 설정)** |
 | **XOR** | `^` | 특정 비트 **반전(0↔1)** |
 | **NOT** | `~` | 모든 비트 반전 |
 | **Shift** | `<<`, `>>` | 비트를 왼쪽/오른쪽으로 이동 |
