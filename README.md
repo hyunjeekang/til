@@ -2,6 +2,7 @@
 
 #### Algorithm
 - [Backtracking](algorithm/backtracking.md)
+- [Bitmasking](algorithm/bitmasking.md)
 - [Exhaustive Search](algorithm/exhaustive-search.md)
 - [Path Finding](algorithm/path-finding.md)
 - [Permutations & Combinations](algorithm/permutations-and-combinations.md)
