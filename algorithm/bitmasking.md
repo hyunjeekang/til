@@ -1,6 +1,6 @@
 # Bitmasking
 
-**Definition**: 0(False)과 1(True)의 상태를 가지는 여러 값들을 **하나의 정수**로 관리하는 기법
+**Definition**: 0(False)과 1(True)의 상태를 가지는 여러 값들을 **하나의 정수**로 관리하는 기법 <br>
 **Advantages**: 메모리 사용량 최소화, 빠른 연산 속도, 간결한 집합 표현 가능
 
 <br/>
@@ -8,19 +8,19 @@
 ### 1. Fundamental Knowledge
 
 **Integer Bit Sizes & Ranges**
-|  | Type | Bits | Range |
+| Language | Type | Bits | Note |
 | --- | --- | --- | --- | 
 | **C / C++** | `int` | 32-bit | 약 21억 |
-|  | `long long` | 64-bit |  원소 60개 이상 관리 시 필수 |
+|  | `long long` | 64-bit |  원소 60개 이상 관리 시 |
 | **Java** | `int` | 32-bit | 고정 크기 |
 |  | `long` | 64-bit | 고정 크기 |
-| **Python** | `int` | **가변 비트** | 메모리가 허용하는 한 무제한 **Overflow 걱정 없음** |
+| **Python** | `int` | **가변 비트** | 메모리 허용 한 무제한 |
 
 <br/>
 
 **Bitwise Operators**
 
-<img src="https://www.educative.io/api/edpresso/shot/6125638579781632/image/5467266204958720?page_type=collection_lesson" width = "60%">
+<img src="https://www.educative.io/api/edpresso/shot/6125638579781632/image/5467266204958720?page_type=collection_lesson" width = "70%">
 
 | Operation | Symbol | Purpose |
 | --- | --- | --- |
