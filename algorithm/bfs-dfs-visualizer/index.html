@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>단지 번호 붙이기 - Stack vs Queue 시각화 (일시정지 기능)</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; text-align: center; margin-top: 20px; background-color: #f8f9fa; }
+        .info { font-size: 15px; color: #d35400; margin-bottom: 15px; font-weight: bold; }
+        .controls { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+        
+        button {
+            padding: 12px 24px; font-size: 16px; font-weight: bold;
+            cursor: pointer; border: none; border-radius: 8px;
+            background-color: #2c3e50; color: white; transition: 0.2s;
+        }
+        button:hover { background-color: #1a252f; transform: translateY(-2px); }
+        button:disabled { background-color: #95a5a6; cursor: not-allowed; transform: none; }
+        
+        #btn-pause { background-color: #f39c12; display: none; } /* 시작 전에는 숨김 */
+        #btn-pause:hover { background-color: #e67e22; }
+        #btn-pause.paused { background-color: #27ae60; }
+        #btn-pause.paused:hover { background-color: #2ecc71; }
+        
+        .flex-container { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; align-items: flex-start; }
+        .board { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; }
+        .status { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #2c3e50; height: 24px;}
+        
+        .content-wrap { display: flex; gap: 20px; align-items: flex-start; }
+        
+        .grid-container { display: grid; gap: 2px; background-color: #bdc3c7; border: 2px solid #2c3e50; }
+        .cell {
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 16px;
+            background-color: white; transition: background-color 0.2s;
+        }
+        .house { background-color: #34495e; color: #7f8c8d; } 
+        .empty { background-color: #ecf0f1; color: transparent; } 
+        
+        .complex-1 { background-color: #e74c3c !important; color: white !important; }
+        .complex-2 { background-color: #3498db !important; color: white !important; }
+        .complex-3 { background-color: #2ecc71 !important; color: white !important; }
+
+        .ds-container {
+            width: 120px; height: 300px; border: 3px solid #7f8c8d; border-radius: 5px;
+            background-color: #ecf0f1; display: flex; flex-direction: column; 
+            overflow-y: auto; padding: 5px; position: relative;
+        }
+        .ds-title { font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #2c3e50; }
+        .ds-item {
+            background-color: #f1c40f; color: #2c3e50; font-weight: bold;
+            padding: 5px; margin: 2px 0; border-radius: 4px; font-size: 13px;
+            animation: popIn 0.2s ease-out; text-align: center; border: 1px solid #e67e22;
+        }
+        .dfs-stack { justify-content: flex-end; }
+        .bfs-queue { justify-content: flex-start; }
+
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <h2>🏡 DFS vs BFS 시각화 </h2>
+    <div class="info">💡 '일시정지'를 누르고 다음 탐색 위치를 예측해 보세요!</div>
+    
+    <div class="controls">
+        <button id="btn-start" onclick="startRace()">🏁 동시 탐색 시작</button>
+        <button id="btn-pause" onclick="togglePause()">⏸️ 일시정지</button>
+        <button onclick="resetRace()">🔄 초기화</button>
+    </div>
+
+    <div class="flex-container">
+        <div class="board">
+            <h3>DFS (Call Stack)</h3>
+            <div id="status-dfs" class="status">대기 중</div>
+            <div class="content-wrap">
+                <div id="grid-dfs" class="grid-container"></div>
+                <div>
+                    <div class="ds-title">Call Stack<br>(LIFO)</div>
+                    <div id="stack-ui" class="ds-container dfs-stack"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="board">
+            <h3>BFS (Queue)</h3>
+            <div id="status-bfs" class="status">대기 중</div>
+            <div class="content-wrap">
+                <div id="grid-bfs" class="grid-container"></div>
+                <div>
+                    <div class="ds-title">Queue<br>(FIFO)</div>
+                    <div id="queue-ui" class="ds-container bfs-queue"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const initialMap = [
+            [0,1,1,0,1,0,0],
+            [0,1,1,0,1,0,1],
+            [1,1,1,0,1,0,1],
+            [0,0,0,0,1,1,1],
+            [0,1,0,0,0,0,0],
+            [0,1,1,1,1,1,0],
+            [0,1,1,1,0,0,0]
+        ];
+        const N = 7;
+        const dx = [-1, 1, 0, 0];
+        const dy = [0, 0, -1, 1];
+        const arrows = ['↑', '↓', '←', '→']; 
+        
+        let isAnimating = false;
+        let speed = 800; // 0.8초로 딜레이 증가 (더 천천히)
+        
+        // 일시정지 및 실행 제어용 변수
+        let isPaused = false;
+        let pauseResolver = null;
+        let currentRunId = 0; // 초기화 시 진행 중인 애니메이션을 안전하게 종료하기 위함
+
+        function createGrid(gridId) {
+            const grid = document.getElementById(gridId);
+            grid.style.gridTemplateColumns = `repeat(${N}, 40px)`;
+            grid.innerHTML = '';
+            for (let i = 0; i < N; i++) {
+                for (let j = 0; j < N; j++) {
+                    const cell = document.createElement('div');
+                    cell.id = `${gridId}-cell-${i}-${j}`;
+                    cell.className = `cell ${initialMap[i][j] === 1 ? 'house' : 'empty'}`;
+                    cell.innerText = initialMap[i][j] === 1 ? '1' : '';
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function updateUIList(containerId, list) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            list.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'ds-item';
+                div.innerText = `(${item[0]}, ${item[1]})`;
+                container.appendChild(div);
+            });
+        }
+
+        // 일시정지를 확인하는 딜레이 함수
+        async function waitNextStep(ms, runId) {
+            await new Promise(r => setTimeout(r, ms)); // 기본 딜레이
+            
+            // 만약 일시정지 상태라면, pauseResolver가 호출될 때까지 대기
+            if (isPaused) {
+                await new Promise(resolve => {
+                    pauseResolver = resolve;
+                });
+            }
+            // 딜레이 도중 초기화 버튼을 눌렀다면 진행 중단
+            if (runId !== currentRunId) throw new Error("Stopped"); 
+        }
+
+        function togglePause() {
+            if (!isAnimating) return;
+            isPaused = !isPaused;
+            const btn = document.getElementById('btn-pause');
+            
+            if (isPaused) {
+                btn.innerText = '▶️ 계속 (재생)';
+                btn.classList.add('paused');
+            } else {
+                btn.innerText = '⏸️ 일시정지';
+                btn.classList.remove('paused');
+                if (pauseResolver) {
+                    pauseResolver(); // 멈춰있던 Promise를 해결하여 애니메이션 재개
+                    pauseResolver = null;
+                }
+            }
+        }
+
+        function resetRace() {
+            currentRunId++; // 기존 애니메이션 강제 종료
+            isAnimating = false;
+            
+            // 일시정지 상태 해제
+            isPaused = false;
+            if (pauseResolver) pauseResolver();
+            
+            const btnPause = document.getElementById('btn-pause');
+            btnPause.style.display = 'none';
+            btnPause.innerText = '⏸️ 일시정지';
+            btnPause.classList.remove('paused');
+            
+            document.getElementById('btn-start').disabled = false;
+
+            createGrid('grid-dfs');
+            createGrid('grid-bfs');
+            document.getElementById('status-dfs').innerText = '대기 중';
+            document.getElementById('status-bfs').innerText = '대기 중';
+            document.getElementById('stack-ui').innerHTML = '';
+            document.getElementById('queue-ui').innerHTML = '';
+        }
+
+        // --- DFS 로직 ---
+        async function runDFS(runId) {
+            let visited = Array.from({length: N}, () => Array(N).fill(false));
+            let callStack = []; 
+            let complexNum = 0;
+
+            async function dfs(x, y, num, arrow) {
+                visited[x][y] = true;
+                callStack.push([x, y]); 
+                updateUIList('stack-ui', callStack);
+                
+                const cell = document.getElementById(`grid-dfs-cell-${x}-${y}`);
+                cell.classList.add(`complex-${num <= 3 ? num : 1}`);
+                cell.innerText = arrow;
+
+                await waitNextStep(speed, runId);
+
+                for (let i = 0; i < 4; i++) {
+                    let nx = x + dx[i];
+                    let ny = y + dy[i];
+
+                    if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+                        if (initialMap[nx][ny] === 1 && !visited[nx][ny]) {
+                            await dfs(nx, ny, num, arrows[i]);
+                        }
+                    }
+                }
+                
+                callStack.pop();
+                updateUIList('stack-ui', callStack);
+                await waitNextStep(speed / 2, runId); 
+            }
+
+            for (let i = 0; i < N; i++) {
+                for (let j = 0; j < N; j++) {
+                    if (initialMap[i][j] === 1 && !visited[i][j]) {
+                        complexNum++;
+                        await dfs(i, j, complexNum, '★');
+                    }
+                }
+            }
+            document.getElementById('status-dfs').innerText = `🎉 완료 (총 ${complexNum}단지)`;
+        }
+
+        // --- BFS 로직 ---
+        async function runBFS(runId) {
+            let visited = Array.from({length: N}, () => Array(N).fill(false));
+            let queue = []; 
+            let complexNum = 0;
+
+            async function bfs(startX, startY, num) {
+                queue.push([startX, startY]); 
+                visited[startX][startY] = true;
+                
+                const startCell = document.getElementById(`grid-bfs-cell-${startX}-${startY}`);
+                startCell.classList.add(`complex-${num <= 3 ? num : 1}`);
+                startCell.innerText = '★';
+                
+                updateUIList('queue-ui', queue);
+                await waitNextStep(speed, runId);
+
+                while (queue.length > 0) {
+                    let [x, y] = queue.shift(); 
+                    updateUIList('queue-ui', queue); 
+                    await waitNextStep(speed / 2, runId);
+
+                    for (let i = 0; i < 4; i++) {
+                        let nx = x + dx[i];
+                        let ny = y + dy[i];
+
+                        if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
+                            if (initialMap[nx][ny] === 1 && !visited[nx][ny]) {
+                                visited[nx][ny] = true;
+                                queue.push([nx, ny]); 
+                                
+                                const cell = document.getElementById(`grid-bfs-cell-${nx}-${ny}`);
+                                cell.classList.add(`complex-${num <= 3 ? num : 1}`);
+                                cell.innerText = arrows[i];
+
+                                updateUIList('queue-ui', queue);
+                                await waitNextStep(speed, runId);
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (let i = 0; i < N; i++) {
+                for (let j = 0; j < N; j++) {
+                    if (initialMap[i][j] === 1 && !visited[i][j]) {
+                        complexNum++;
+                        await bfs(i, j, complexNum);
+                    }
+                }
+            }
+            document.getElementById('status-bfs').innerText = `🎉 완료 (총 ${complexNum}단지)`;
+        }
+
+        async function startRace() {
+            if (isAnimating) return;
+            resetRace(); // 화면 및 변수 초기화
+            
+            const runId = currentRunId; // 현재 실행 ID 고정
+            isAnimating = true;
+            document.getElementById('btn-start').disabled = true;
+            document.getElementById('btn-pause').style.display = 'inline-block'; // 일시정지 버튼 표시
+            document.getElementById('status-dfs').innerText = '탐색 진행 중...';
+            document.getElementById('status-bfs').innerText = '탐색 진행 중...';
+
+            try {
+                // 비동기 함수 도중 초기화 버튼을 누르면 에러를 throw 하여 안전하게 종료
+                await Promise.all([runDFS(runId), runBFS(runId)]);
+                
+                isAnimating = false;
+                document.getElementById('btn-start').disabled = false;
+                document.getElementById('btn-pause').style.display = 'none';
+            } catch (e) {
+                // 초기화 버튼으로 인해 중단된 경우
+                console.log("Animation aborted by reset");
+            }
+        }
+
+        window.onload = resetRace;
+    </script>
+</body>
+</html>
