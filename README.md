@@ -16,7 +16,13 @@
 - [Topology Sort](algorithm/topology-sort.md)
 
 #### Java
+- [Comparable](java/java-comparable.md)
+
+- [Data Structure](java/java-data-structure.md)
+
 - [Fast I/O](java/java-fast-io.md)
+
+- [Types](java/types.md)
 
 #### Git
 - [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
