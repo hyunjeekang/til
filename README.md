@@ -15,6 +15,9 @@
 
 - [Topology Sort](algorithm/topology-sort.md)
 
+#### Git
+- [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
+
 #### Java
 - [Comparable](java/java-comparable.md)
 
@@ -24,8 +27,8 @@
 
 - [Types](java/types.md)
 
-#### Git
-- [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
+#### JavaScript
+- [Scope & Memory Lifecycle](javascript/javascript-scope-and-memory-lifecycle.md)
 
 #### Python
 - [Arbitrary Argmnets Lists](python/python-arbitrary-argument-lists.md)
