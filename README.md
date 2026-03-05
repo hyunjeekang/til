@@ -28,6 +28,7 @@
 - [Types](java/types.md)
 
 #### JavaScript
+- [Asynchronous](javascript/javascript-asynchronous.md)
 - [Scope & Memory Lifecycle](javascript/javascript-scope-and-memory-lifecycle.md)
 
 #### Python
