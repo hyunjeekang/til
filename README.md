@@ -5,6 +5,7 @@
 - [Bitmasking](algorithm/bitmasking.md)
 
 - [DFS & BFS Interactive Visualizer](https://hyunjeekang.github.io/til/algorithm/bfs-dfs-visualizer/)
+- [Disjoint Set](algorithm/disjoint-set.md)
 
 - [Exhaustive Search](algorithm/exhaustive-search.md)
 
