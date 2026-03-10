@@ -9,6 +9,8 @@
 
 - [Exhaustive Search](algorithm/exhaustive-search.md)
 
+- [Minimum Spanning Tree](algorithm/minimum-spanning-tree.md)
+
 - [Path Finding](algorithm/path-finding.md)
 - [Permutations & Combinations](algorithm/permutations-and-combinations.md)
 
