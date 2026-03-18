@@ -3,6 +3,7 @@
 #### AI
 - [Normalization](ai/normalization.md)
 
+- [Model Evaluation and Metrics](ai/model-evaluation-and-metrics.md)
 - [Machine Learning](ai/machine-learning.md)
 
 
