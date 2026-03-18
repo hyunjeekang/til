@@ -1,5 +1,8 @@
 ## Today I Learned 👽
 
+#### AI
+- [Machine Learning](ai/machine-learning.md)
+
 #### Algorithm
 - [Backtracking](algorithm/backtracking.md)
 - [Bitmasking](algorithm/bitmasking.md)
