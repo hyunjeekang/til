@@ -35,6 +35,8 @@
 
 - [Fast I/O](java/java-fast-io.md)
 
+- [Map](java/map.md)
+
 - [Types](java/types.md)
 
 #### JavaScript
