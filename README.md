@@ -1,7 +1,10 @@
 ## Today I Learned 👽
 
 #### AI
+- [Normalization](ai/normalization.md)
+
 - [Machine Learning](ai/machine-learning.md)
+
 
 #### Algorithm
 - [Backtracking](algorithm/backtracking.md)
