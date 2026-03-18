@@ -80,7 +80,8 @@ LLM에서 사용되는 신경망도 머신러닝의 일종
 
 **Adam Optimizer 아담**<br/>
 <img src = "https://miro.medium.com/1*_9-WcjGQ-yXEOEGW-wQXWw.png"><br>
-만약 이 그림처럼 극소값이 여러 개인 경우 `LM (local minimum)`에 갇힐 수 있다.<br>
+만약 이 그림처럼 극소값이 여러 개인 경우 (**Non-convex 함수인 경우**)<br/>
+-> `LM (local minimum)`에 갇힐 수 있다.<br>
 더 좋은 `a` `b`를 찾지 못하고 학습이 안 될 수 있음<br/>
 
 더 똑똑한 방식으로 점프하는 방식이 `Adam`!
@@ -99,13 +100,19 @@ LLM에서 사용되는 신경망도 머신러닝의 일종
 
 <img src = "https://dezyre.gumlet.io/images/blog/example-on-how-to-do-logistic-regression-in-r/image_60871686071641293463932.png?w=376&dpr=2.6"><br/>
 
+선형 회귀 함수에 sigmoid 함수를 씌워서 0~1 사이의 값으로 만들기<br/>
 `y = sigmoid(ax+b)`에서 `a`, `b` 찾기 -> 확률 곡선 만들기<br/>
 
 <img src = "https://miro.medium.com/0*D5do3xhv5ulF50w2.png"><br/>
 
 **Sigmoid function**
 어떤 값이 들어와도 0과 1의 사이 값으로 바꿔주는 함수<br/>
--> 분류 가능
+-> 분류 가능<br/>
+
+왜 sigmoid function을 쓰는 걸까?<br/>
+-> 선형 회귀 식인  $y = ax + b$는 결과값이  $-\infty$에서 $+\infty$ 이다.<br/>
+-> 하지만 분류(Classification)에서는 이 환자가 암일 확률이 얼마인가? 와 같은 0~1 사이의 값이 필요하다.<br/>
+-> 시그모이드 함수를 통과시키면 아무리 크고 작은 숫자여도 `무조건 0.5 기준으로 0~1 사이의 곡선 값으로 변환`된다.<br/>
 
 로지스틱 회귀 역시<br/>
 `Grid Search` 방식 또는 `Gradient Descent` 방식으로 <br/>
