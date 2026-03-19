@@ -1,6 +1,7 @@
 ## Today I Learned 👽
 
 #### AI
+- [Neural Network](ai/neural-network.md)
 - [Normalization](ai/normalization.md)
 
 - [Model Evaluation and Metrics](ai/model-evaluation-and-metrics.md)
