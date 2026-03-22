@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>BOJ 2448 Simulator (Large Stars)</title>
+    <title>BOJ 2448 Simulator (Top Cut Fix)</title>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -84,21 +84,22 @@
         #viewport {
             flex-grow: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            /* ★★★ 이 부분을 수정했습니다 ★★★ */
+            /* align-items: center; */ /* 기존의 세로 중앙 정렬을 삭제합니다. */
+            align-items: flex-start;  /* 내용을 상단에 맞춥니다. */
+            justify-content: center; /* 가로 중앙 정렬은 유지합니다. */
             background-color: white;
             padding: 20px;
-            overflow: auto; /* 별이 커지면 스크롤 생성 */
+            overflow: auto; /* 별이 화면보다 크면 스크롤을 생성합니다. */
         }
 
-        /* ★★★ 이 부분을 수정했습니다 ★★★ */
         #star-map {
             font-family: 'Courier New', monospace; /* 고정폭 글꼴 필수 */
             line-height: 1.1;                     /* 줄 간격 미세 조정 */
-            font-size: 32px;                      /* ★ 별 크기 (기존 12px -> 32px) */
+            font-size: 24px;                      /* ★ 별 크기 (32px -> 24px로 약간 줄였습니다) */
             white-space: pre;
             color: var(--accent-color);
-            letter-spacing: -2px;                 /* ★ 글자 간격 (너무 벌어지지 않게 음수값 부여) */
+            letter-spacing: -1.5px;                 /* ★ 글자 간격 조정 */
             font-weight: bold;                    /* 더 잘 보이게 굵게 */
         }
     </style>
@@ -110,7 +111,7 @@
     
     <div class="control-group">
         <label>Input N (3 * 2^k)</label>
-        <input type="number" id="n-input" value="6" step="3">
+        <input type="number" id="n-input" value="12" step="3">
         <button id="start-btn">Reset & Start</button>
         <button id="step-btn" disabled>Next Step (Space)</button>
     </div>
@@ -130,8 +131,7 @@
 </div>
 
 <script>
-    // --- 자바스크립트 로직은 동일합니다 ---
-    let N = 6;
+    let N = 12;
     let map = [];
     let simulator = null;
     let stack = [];
@@ -162,7 +162,6 @@
         });
     }
 
-    // 재귀 함수를 Generator로 변환하여 단계별 실행 가능하게 함
     function* drawStarsGenerator(r, c, n) {
         stack.push({ r, c, n, phase: 'Processing...' });
         paramsDisplay.textContent = `r: ${r}, c: ${c}, n: ${n}`;
@@ -227,8 +226,8 @@
         }
     });
 
-    // 초기 화면 (커진 별 크기에 맞춰 N=6으로 시작)
-    initMap(6);
+    // 초기 화면 (커진 별 크기에 맞춰 N=12로 시작)
+    initMap(12);
 </script>
 
 </body>
