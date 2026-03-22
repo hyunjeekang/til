@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>BOJ 2448 Simulator (Large Stars)</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #2d3436;
+            --accent-color: #0984e3;
+            --border-color: #dfe6e9;
+            --stack-bg: #f9f9f9;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar - Controls & Stack */
+        #sidebar {
+            width: 350px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            box-sizing: border-box;
+            background: var(--stack-bg);
+            flex-shrink: 0; /* 사이드바 크기 고정 */
+        }
+
+        h2 { font-size: 1.2rem; margin-bottom: 1.5rem; font-weight: 600; }
+
+        .control-group { margin-bottom: 2rem; }
+        label { display: block; font-size: 0.8rem; color: #636e72; margin-bottom: 0.5rem; }
+        
+        input, button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Stack Visualizer */
+        #stack-container {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .stack-item {
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            margin-bottom: 6px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Main Viewport */
+        #viewport {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            padding: 20px;
+            overflow: auto; /* 별이 커지면 스크롤 생성 */
+        }
+
+        /* ★★★ 이 부분을 수정했습니다 ★★★ */
+        #star-map {
+            font-family: 'Courier New', monospace; /* 고정폭 글꼴 필수 */
+            line-height: 1.1;                     /* 줄 간격 미세 조정 */
+            font-size: 32px;                      /* ★ 별 크기 (기존 12px -> 32px) */
+            white-space: pre;
+            color: var(--accent-color);
+            letter-spacing: -2px;                 /* ★ 글자 간격 (너무 벌어지지 않게 음수값 부여) */
+            font-weight: bold;                    /* 더 잘 보이게 굵게 */
+        }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <h2>BOJ 2448 Sim</h2>
+    
+    <div class="control-group">
+        <label>Input N (3 * 2^k)</label>
+        <input type="number" id="n-input" value="6" step="3">
+        <button id="start-btn">Reset & Start</button>
+        <button id="step-btn" disabled>Next Step (Space)</button>
+    </div>
+
+    <div id="current-info" class="control-group">
+        <label>Current Parameters</label>
+        <div id="params-display">r: -, c: -, n: -</div>
+    </div>
+
+    <label>Function Stack</label>
+    <div id="stack-container">
+        </div>
+</div>
+
+<div id="viewport">
+    <div id="star-map"></div>
+</div>
+
+<script>
+    // --- 자바스크립트 로직은 동일합니다 ---
+    let N = 6;
+    let map = [];
+    let simulator = null;
+    let stack = [];
+
+    const nInput = document.getElementById('n-input');
+    const startBtn = document.getElementById('start-btn');
+    const stepBtn = document.getElementById('step-btn');
+    const mapDisplay = document.getElementById('star-map');
+    const stackContainer = document.getElementById('stack-container');
+    const paramsDisplay = document.getElementById('params-display');
+
+    function initMap(n) {
+        map = Array.from({ length: n }, () => Array(2 * n - 1).fill(' '));
+        renderMap();
+    }
+
+    function renderMap() {
+        mapDisplay.textContent = map.map(row => row.join('')).join('\n');
+    }
+
+    function updateStackUI() {
+        stackContainer.innerHTML = '';
+        [...stack].reverse().forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'stack-item';
+            div.innerHTML = `drawStars(${item.r}, ${item.c}, ${item.n})<br><span class="status-badge">${item.phase}</span>`;
+            stackContainer.appendChild(div);
+        });
+    }
+
+    // 재귀 함수를 Generator로 변환하여 단계별 실행 가능하게 함
+    function* drawStarsGenerator(r, c, n) {
+        stack.push({ r, c, n, phase: 'Processing...' });
+        paramsDisplay.textContent = `r: ${r}, c: ${c}, n: ${n}`;
+        updateStackUI();
+        
+        yield; // Step pause
+
+        if (n === 3) {
+            map[r][c] = '*';
+            map[r + 1][c - 1] = map[r + 1][c + 1] = '*';
+            map[r + 2][c - 2] = map[r + 2][c - 1] = map[r + 2][c] = map[r + 2][c + 1] = map[r + 2][c + 2] = '*';
+            renderMap();
+            stack[stack.length - 1].phase = 'Base Case Reached';
+            updateStackUI();
+            yield;
+            stack.pop();
+            return;
+        }
+
+        const m = n / 2;
+        
+        stack[stack.length - 1].phase = 'Calling Top';
+        yield* drawStarsGenerator(r, c, m);
+        
+        stack[stack.length - 1].phase = 'Calling Bottom-Left';
+        yield* drawStarsGenerator(r + m, c - m, m);
+        
+        stack[stack.length - 1].phase = 'Calling Bottom-Right';
+        yield* drawStarsGenerator(r + m, c + m, m);
+
+        stack.pop();
+        updateStackUI();
+    }
+
+    function startSimulation() {
+        N = parseInt(nInput.value);
+        if (isNaN(N) || N < 3) return;
+        
+        initMap(N);
+        stack = [];
+        simulator = drawStarsGenerator(0, N - 1, N);
+        stepBtn.disabled = false;
+        nextStep();
+    }
+
+    function nextStep() {
+        if (simulator) {
+            const result = simulator.next();
+            if (result.done) {
+                stepBtn.disabled = true;
+                paramsDisplay.textContent = "Finished!";
+            }
+        }
+    }
+
+    startBtn.addEventListener('click', startSimulation);
+    stepBtn.addEventListener('click', nextStep);
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+            e.preventDefault();
+            nextStep();
+        }
+    });
+
+    // 초기 화면 (커진 별 크기에 맞춰 N=6으로 시작)
+    initMap(6);
+</script>
+
+</body>
+</html>
