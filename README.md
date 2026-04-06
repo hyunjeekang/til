@@ -30,6 +30,8 @@
 - [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
 
 #### Java
+- [Arrays.sort vs Collections.sort](java/java-sort.md)
+
 - [Comparable](java/java-comparable.md)
 
 - [Data Structure](java/java-data-structure.md)
