@@ -1,6 +1,7 @@
 ## Today I Learned 👽
 
 #### AI
+
 - [Neural Network](ai/neural-network.md)
 - [Normalization](ai/normalization.md)
 
@@ -9,11 +10,12 @@
 
 
 #### Algorithm
+
 - [Backtracking](algorithm/backtracking.md)
 - [Bitmasking](algorithm/bitmasking.md)
 
-- [DFS & BFS Interactive Visualizer](https://hyunjeekang.github.io/til/algorithm/bfs-dfs-visualizer/)
 - [Disjoint Set](algorithm/disjoint-set.md)
+- [Dynamic Programming](algorithm/dynamic-programming.md)
 
 - [Exhaustive Search](algorithm/exhaustive-search.md)
 
@@ -26,8 +28,11 @@
 
 - [Topology Sort](algorithm/topology-sort.md)
 
+
 #### Git
+
 - [Resolving Git Merge Conflicts](git/git-merge-conflict.md)
+
 
 #### Java
 - [Arrays.sort vs Collections.sort](java/java-sort.md)
@@ -42,9 +47,12 @@
 
 - [Types](java/types.md)
 
+
 #### JavaScript
 - [Asynchronous](javascript/javascript-asynchronous.md)
+
 - [Scope & Memory Lifecycle](javascript/javascript-scope-and-memory-lifecycle.md)
+
 
 #### Python
 - [Arbitrary Argmnets Lists](python/python-arbitrary-argument-lists.md)
