@@ -19,6 +19,8 @@
 
 - [Exhaustive Search](algorithm/exhaustive-search.md)
 
+- [Knapsack Problem](algorithm/knapsack-problem.md)
+
 - [Minimum Spanning Tree](algorithm/minimum-spanning-tree.md)
 
 - [Path Finding](algorithm/path-finding.md)
