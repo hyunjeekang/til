@@ -19,6 +19,8 @@
 
 - [Exhaustive Search](algorithm/exhaustive-search.md)
 
+- [Floyd-Warshall](algorithm/floyd-warshall.md)
+
 - [Knapsack Problem](algorithm/knapsack-problem.md)
 
 - [Minimum Spanning Tree](algorithm/minimum-spanning-tree.md)
