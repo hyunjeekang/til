@@ -20,7 +20,7 @@
 
 모든 사용자의 요청 URI와 파라미터를 콘솔에 기록해야 한다고 가정해 보자.
 
-**필터 X**
+**필터 X**<br>
 모든 서블릿 혹은 프론트 컨트롤러의 메서드 시작 부분에 아래와 같은 로깅 코드를 일일이 작성해야 한다.
 
 ```java
@@ -35,7 +35,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 }
 ```
 
-**필터 O**
+**필터 O**<br>
 서블릿은 철저히 비즈니스 로직만 처리하도록 두고, 로깅은 필터로 분리하여 서블릿 실행 전에 처리한다.<br> `@WebFilter("/*")` 어노테이션을 통해 모든 요청에 이 필터를 적용할 수 있다.
 
 ```java

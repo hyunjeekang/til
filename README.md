@@ -67,8 +67,14 @@
 #### Web Backend
 
 - [WAS & Servlet Lifecycle](web/servlet-lifecycle.md)
+
 - [Servlet Mapping & Front Controller](web/front-controller-pattern.md)
 - [Servlet - Filter & Listener](web/servlet-filter-and-listener.md)
 - [Servlet - Multithreading](web/servlet-and-memory-structure.md)
 - [Servlet Flow Control](web/servlet-flow-control.md)
+
+- [JSP](web/jsp.md)
+
+- [JSP -> Servlet](web/jsp-to-servlet.md)
+
 - [Maven](web/maven.md)
