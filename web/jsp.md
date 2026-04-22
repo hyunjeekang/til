@@ -116,3 +116,72 @@ JSP 페이지 전체에 적용되는 설정을 지정한다.
 | 실행 과정 | 컴파일된 `.class`를 WAS가 직접 실행 | 최초 요청 시 서블릿으로 변환 후 실행 |
 | UI 작업 | 복잡하고 번거로움 | HTML처럼 작성하면서 필요한 곳에 Java 삽입 |
 | 주요 역할 | 비즈니스 로직 처리 (Controller) | 화면 렌더링 (View) |
+
+<br>
+
+## 5. Action Tags
+ 
+스크립틀릿 없이 XML 형태의 태그로 JSP 기능을 사용할 수 있도록 JSP 스펙에 내장된 태그들이다. `<%@ taglib %>` 선언 없이 바로 사용한다.
+ 
+### jsp:include
+ 
+다른 JSP 파일을 현재 페이지에 포함시킨다. directive의 `<%@ include %>`와 동작 방식이 다르다.
+ 
+| 구분 | `<%@ include file="..." %>` | `<jsp:include page="..." />` |
+|---|---|---|
+| 처리 시점 | 컴파일 전 (정적 결합) | 실행 시 (동적 결합) |
+| 서블릿 생성 | 두 JSP가 하나로 합쳐진 뒤 서블릿 1개 생성 | 각각 별도의 서블릿으로 생성, 실행 중 포함 |
+| 변수 공유 | 가능 (같은 클래스 내부) | 불가능 (별개의 서블릿) |
+| 주요 용도 | 변경이 없는 공통 코드 삽입 | 동적으로 변하는 화면 조각 삽입 |
+ 
+```jsp
+<%-- 실행 시마다 동적으로 header.jsp를 불러온다 --%>
+<jsp:include page="/fragments/header.jsp" />
+```
+ 
+### jsp:useBean
+ 
+JSP에서 자바 객체를 생성하거나 가져올 때 사용한다. 지정한 scope에 이미 해당 객체가 있으면 새로 생성하지 않고 기존 객체를 반환한다.
+ 
+```jsp
+<%-- 스크립틀릿 방식 --%>
+<% MemberDto m = new MemberDto(); %>
+ 
+<%-- Action Tag 방식 --%>
+<jsp:useBean id="m" class="edu.ssafy.dto.MemberDto" scope="request" />
+```
+ 
+`scope`는 `page`(기본값), `request`, `session`, `application` 중 하나를 지정한다. 지정한 scope의 `setAttribute`로 저장되는 것과 같다.
+ 
+### jsp:setProperty / jsp:getProperty
+ 
+`useBean`으로 생성한 객체의 프로퍼티(getter/setter)에 접근할 때 사용한다.
+ 
+```jsp
+<jsp:useBean id="m" class="edu.ssafy.dto.MemberDto" scope="request" />
+<jsp:setProperty property="id" name="m" value="hong" />
+<jsp:getProperty property="id" name="m" />
+```
+ 
+<br>
+ 
+## 6. isErrorPage
+ 
+에러 처리 전용 JSP를 만들 때 사용하는 page directive 속성이다.
+ 
+```jsp
+<%@ page isErrorPage="true" %>
+```
+ 
+`isErrorPage="true"` 로 설정하면 `exception` 내장 객체가 생성된다. 이 객체로 발생한 예외 정보를 꺼낼 수 있다.
+ 
+```jsp
+<%@ page isErrorPage="true" %>
+<p>오류가 발생했습니다: <%= exception.getMessage() %></p>
+```
+ 
+에러가 발생한 JSP에서는 `errorPage` 속성으로 에러 페이지를 지정한다.
+ 
+```jsp
+<%@ page errorPage="/error/error.jsp" %>
+```
