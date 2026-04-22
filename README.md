@@ -57,6 +57,9 @@
 
 - [Scope & Memory Lifecycle](javascript/javascript-scope-and-memory-lifecycle.md)
 
+#### OS
+
+- [Conccurrency & Synchronization](os/concurrency-and-synchronization.md)
 
 #### Python
 - [Arbitrary Argmnets Lists](python/python-arbitrary-argument-lists.md)
