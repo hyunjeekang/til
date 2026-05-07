@@ -69,6 +69,8 @@
 #### Spring
 - [DI : Dependency Injection](spring/di.md)
 
+- [Springboot & Lombok Basics](spring/springboot-lombok-basics.md)
+
 #### Web Backend
 
 - [WAS & Servlet Lifecycle](web/servlet-lifecycle.md)
