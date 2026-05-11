@@ -61,7 +61,7 @@ public void encryptPass(Member member) {
 execution( [접근제어자] 반환타입 [패키지.클래스.]메서드명(파라미터) )
 ```
 
-### PointcutAspect.java에서 실습한 표현식들
+### 표현식 예제
 
 ```java
 
@@ -400,7 +400,6 @@ AOP는 **프록시를 통한 외부 호출**에만 적용된다.
 같은 클래스 내부에서 `this.메서드()`를 호출하면 프록시를 거치지 않아 AOP가 동작하지 않는다.
 
 ```java
-// HeavyWorkBean.java
 public void methodA() {
     log.debug("methodA called");
 }
