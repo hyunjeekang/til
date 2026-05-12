@@ -73,6 +73,8 @@
 
 - [Springboot & Lombok Basics](spring/springboot-lombok-basics.md)
 
+= [Spring MVC](spring/spring-mvc.md)
+
 #### Web Backend
 
 - [WAS & Servlet Lifecycle](web/servlet-lifecycle.md)
