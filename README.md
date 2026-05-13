@@ -73,7 +73,9 @@
 
 - [Springboot & Lombok Basics](spring/springboot-lombok-basics.md)
 
-= [Spring MVC](spring/spring-mvc.md)
+- [Spring MVC](spring/spring-mvc.md)
+
+- [Spring MVC test](spring/spring-mvc-test.md)
 
 #### Web Backend
 
